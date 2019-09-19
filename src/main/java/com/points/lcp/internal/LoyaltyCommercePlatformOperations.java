@@ -59,8 +59,8 @@ public class LoyaltyCommercePlatformOperations {
   }
   
   @MediaType(value = ANY, strict = false)
-  public String offerSets(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, String firstName, String lastName, String memberId, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
-	  String request = "{\"offerTypes\": [\"BUY\"], \"user\": {\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\", \"memberId\": \""+memberId+"\", \"memberValidation\": \""+memberValidation+"\"}, \"session\": {}}";
+  public String getOffers(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String memberId, String offerType, @Connection LoyaltyCommercePlatformConnection connection) {
+	  String request = "{\"offerTypes\": [\""+offerType+"\"], \"user\": {\"memberId\": \""+memberId+"\", \"memberValidation\": \""+memberValidation+"\"}, \"session\": {}}";
 	  try {
 		return connection.callLCPOfferSets(request);
 	} catch (Exception e) {
