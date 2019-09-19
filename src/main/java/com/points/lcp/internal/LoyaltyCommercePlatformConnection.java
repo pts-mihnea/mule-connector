@@ -14,10 +14,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 /**
  * This class represents an extension connection just as example (there is no real connection with anything here c:).
@@ -25,7 +23,6 @@ import com.google.gson.JsonObject;
 public final class LoyaltyCommercePlatformConnection {
 	
 	private static String contentType="application/json";
-	private static Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
   private final String server;
   private final String lpId;
@@ -61,16 +58,15 @@ public final class LoyaltyCommercePlatformConnection {
     // do something to invalidate this connection!
   }
   
-  public JsonObject callLCP(JsonObject request, String method) throws Exception{
+  public String callLCP(String requestBody, String method) throws Exception{
 	  String fullUrl = "https://"+server+"/v1/lps/"+lpId+"/"+method+"/";
 	  HttpPost httpPost = new HttpPost(fullUrl);
-	  String requestBody = gson.toJson(request);
 	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl));
 	  httpPost.addHeader("Authorization", authorizationHeader);
 	  httpPost.addHeader("Content-type",contentType);
 	  httpPost.setEntity(new StringEntity(requestBody,ContentType.APPLICATION_JSON));
 	  HttpResponse response = httpClient.execute(httpPost);
-	  return null;
+	  return EntityUtils.toString(response.getEntity());
   }
   
   private static String generateAuthorizationHeader(String macId, String macKey,

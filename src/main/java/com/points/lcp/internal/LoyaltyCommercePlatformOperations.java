@@ -3,6 +3,11 @@ package com.points.lcp.internal;
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 
 import org.mule.runtime.extension.api.annotation.param.MediaType;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Example;
+import org.mule.weave.v2.module.json.reader.JsonObject;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 
@@ -12,13 +17,17 @@ import org.mule.runtime.extension.api.annotation.param.Connection;
  */
 public class LoyaltyCommercePlatformOperations {
 	
-
-  /**
-   * Example of an operation that uses the configuration and a connection instance to perform some action.
-   */
+	
   @MediaType(value = ANY, strict = false)
-  public String validateMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, @Connection LoyaltyCommercePlatformConnection connection){
-    return "Using Configuration [" + configuration.getConfigId() + "] with Connection id [" + connection.getServer() + "]";
+  public String validateMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberId, String firstName, String lastName, @Optional String password, @Connection LoyaltyCommercePlatformConnection connection){
+      String request = "{\"memberId\": \""+memberId+"\",\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\"}";
+	  try {
+		return connection.callLCP(request, "mvs");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
   }
   
   
@@ -26,14 +35,16 @@ public class LoyaltyCommercePlatformOperations {
    * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the payload.
    */
   @MediaType(value = ANY, strict = false)
-  public String debitMemberAccount(String memberValidation, String pic, int amount) {
-    return buildHelloMessage(memberValidation);
+  public String debitMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
+	  String request = "{\"memberValidation\": \""+memberValidation+"\",\"amount\":"+amount+",\"pic\":\""+pic+"\"}";
+	  try {
+		return connection.callLCP(request, "debit-order");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
   }
 
-  /**
-   * Private Methods are not exposed as operations
-   */
-  private String buildHelloMessage(String person) {
-    return "Hello " + person + "!!!";
-  }
+
 }
