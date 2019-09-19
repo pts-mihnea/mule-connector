@@ -45,6 +45,30 @@ public class LoyaltyCommercePlatformOperations {
 		return "mihnea";
 	}
   }
+  
+  @MediaType(value = ANY, strict = false)
+  public String creditMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
+	  String request = "{\"memberValidation\": \""+memberValidation+"\",\"amount\":"+amount+",\"pic\":\""+pic+"\"}";
+	  try {
+		return connection.callLCP(request, "credit-order");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
+  }
+  
+  @MediaType(value = ANY, strict = false)
+  public String offerSets(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, String firstName, String lastName, String memberId, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
+	  String request = "{\"offerTypes\": [\"BUY\"], \"user\": {\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\", \"memberId\": \""+memberId+"\", \"memberValidation\": \""+memberValidation+"\"}, \"session\": {}}";
+	  try {
+		return connection.callLCPOfferSets(request);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
+  }
 
 
 }

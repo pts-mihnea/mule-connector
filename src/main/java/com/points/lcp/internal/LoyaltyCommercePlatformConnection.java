@@ -69,6 +69,17 @@ public final class LoyaltyCommercePlatformConnection {
 	  return EntityUtils.toString(response.getEntity());
   }
   
+  public String callLCPOfferSets(String requestBody) throws Exception{
+	  String fullUrl = "https://"+server+"/v1/offer-sets/";
+	  HttpPost httpPost = new HttpPost(fullUrl);
+	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl));
+	  httpPost.addHeader("Authorization", authorizationHeader);
+	  httpPost.addHeader("Content-type",contentType);
+	  httpPost.setEntity(new StringEntity(requestBody,ContentType.APPLICATION_JSON));
+	  HttpResponse response = httpClient.execute(httpPost);
+	  return EntityUtils.toString(response.getEntity());
+  }
+  
   private static String generateAuthorizationHeader(String macId, String macKey,
 			String contentType, String requestBody, URL lcpURL)
 			throws Exception {
