@@ -1,0 +1,19 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:loyalty-commerce-platform="http://www.mulesoft.org/schema/mule/loyalty-commerce-platform"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/loyalty-commerce-platform http://www.mulesoft.org/schema/mule/loyalty-commerce-platform/current/mule-loyalty-commerce-platform.xsd">
+
+    <!--  loyalty-commerce-platform:config name="config" configId="configId">
+        <loyalty-commerce-platform:connection requiredParameter="aValue" />
+    </loyalty-commerce-platform:config>
+
+    <flow name="sayHiFlow">
+        <loyalty-commerce-platform:validate-member person="Mariano Gonzalez"/>
+    </flow>
+
+    <flow name="retrieveInfoFlow">
+        <loyalty-commerce-platform:retrieve-info config-ref="config"/>
+    </flow-->
+
+</mule>
