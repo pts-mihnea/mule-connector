@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.points</groupId>
     <artifactId>lcp</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.31</version>
     <packaging>mule-extension</packaging>
     <name>Loyalty Commerce Platform Extension</name>
 

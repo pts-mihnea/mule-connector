@@ -30,6 +30,18 @@ public class LoyaltyCommercePlatformOperations {
 	}
   }
   
+  @MediaType(value = ANY, strict = false)
+  public String getMemberDetails(@Config LoyaltyCommercePlatformConfiguration configuration, String mvUrl, @Connection LoyaltyCommercePlatformConnection connection){
+	  String fullUrl = mvUrl+"/member-details";
+	  try {
+		return connection.callLCPGet(fullUrl);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
+  }
+  
   
   /**
    * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the payload.

@@ -12,6 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -61,7 +62,7 @@ public final class LoyaltyCommercePlatformConnection {
   public String callLCP(String requestBody, String method) throws Exception{
 	  String fullUrl = "https://"+server+"/v1/lps/"+lpId+"/"+method+"/";
 	  HttpPost httpPost = new HttpPost(fullUrl);
-	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl));
+	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl), "POST");
 	  httpPost.addHeader("Authorization", authorizationHeader);
 	  httpPost.addHeader("Content-type",contentType);
 	  httpPost.setEntity(new StringEntity(requestBody,ContentType.APPLICATION_JSON));
@@ -69,10 +70,18 @@ public final class LoyaltyCommercePlatformConnection {
 	  return EntityUtils.toString(response.getEntity());
   }
   
+  public String callLCPGet(String fullUrl) throws Exception{
+	  HttpGet httpGet = new HttpGet(fullUrl);
+	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, null, null, new URL(fullUrl), "GET");
+	  httpGet.addHeader("Authorization", authorizationHeader);
+	  HttpResponse response = httpClient.execute(httpGet);
+	  return EntityUtils.toString(response.getEntity());
+  }
+  
   public String callLCPOfferSets(String requestBody) throws Exception{
 	  String fullUrl = "https://"+server+"/v1/offer-sets/";
 	  HttpPost httpPost = new HttpPost(fullUrl);
-	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl));
+	  String authorizationHeader = generateAuthorizationHeader(macId, macKey, contentType, requestBody, new URL(fullUrl), "POST");
 	  httpPost.addHeader("Authorization", authorizationHeader);
 	  httpPost.addHeader("Content-type",contentType);
 	  httpPost.setEntity(new StringEntity(requestBody,ContentType.APPLICATION_JSON));
@@ -81,7 +90,7 @@ public final class LoyaltyCommercePlatformConnection {
   }
   
   private static String generateAuthorizationHeader(String macId, String macKey,
-			String contentType, String requestBody, URL lcpURL)
+			String contentType, String requestBody, URL lcpURL, String method)
 			throws Exception {
 		// Step 1: Generate epoch time in seconds
 		String ts = "" + new Date().getTime();
@@ -99,7 +108,7 @@ public final class LoyaltyCommercePlatformConnection {
 		}
 
 		// Step 4: Build normalized request string
-		String normalizedRequestString = ts + "\n" + nonce + "\nPOST\n"
+		String normalizedRequestString = ts + "\n" + nonce + "\n" + method + "\n"
 				+ lcpURL.getPath() + "\n" + lcpURL.getHost() + "\n"
 				+ "443" + "\n" + ext + "\n";
 
