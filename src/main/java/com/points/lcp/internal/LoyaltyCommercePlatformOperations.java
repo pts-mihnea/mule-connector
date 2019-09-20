@@ -31,8 +31,8 @@ public class LoyaltyCommercePlatformOperations {
   }
   
   @MediaType(value = ANY, strict = false)
-  public String getMemberDetails(@Config LoyaltyCommercePlatformConfiguration configuration, String mvUrl, @Connection LoyaltyCommercePlatformConnection connection){
-	  String fullUrl = mvUrl+"/member-details";
+  public String getMemberDetails(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, @Connection LoyaltyCommercePlatformConnection connection){
+	  String fullUrl = memberValidation+"/member-details";
 	  try {
 		return connection.callLCPGet(fullUrl);
 	} catch (Exception e) {
