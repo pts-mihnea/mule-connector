@@ -18,7 +18,7 @@ import org.mule.runtime.extension.api.annotation.param.Connection;
 public class LoyaltyCommercePlatformOperations {
 	
 	
-  @MediaType(value = ANY, strict = false)
+  @MediaType(value = MediaType.APPLICATION_JSON, strict = false)
   public String validateMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberId, String firstName, String lastName, @Optional String password, @Connection LoyaltyCommercePlatformConnection connection){
       String request = "{\"memberId\": \""+memberId+"\",\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\"}";
 	  try {
@@ -30,11 +30,23 @@ public class LoyaltyCommercePlatformOperations {
 	}
   }
   
+  @MediaType(value = MediaType.APPLICATION_JSON, strict = false)
+  public String getMemberDetails(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, @Connection LoyaltyCommercePlatformConnection connection){
+	  String fullUrl = memberValidation+"/member-details";
+	  try {
+		return connection.callLCPGet(fullUrl);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "mihnea";
+	}
+  }
+  
   
   /**
    * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the payload.
    */
-  @MediaType(value = ANY, strict = false)
+  @MediaType(value = MediaType.APPLICATION_JSON, strict = false)
   public String debitMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
 	  String request = "{\"memberValidation\": \""+memberValidation+"\",\"amount\":"+amount+",\"pic\":\""+pic+"\"}";
 	  try {
@@ -46,7 +58,7 @@ public class LoyaltyCommercePlatformOperations {
 	}
   }
   
-  @MediaType(value = ANY, strict = false)
+  @MediaType(value = MediaType.APPLICATION_JSON, strict = false)
   public String creditMemberAccount(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String pic, int amount, @Connection LoyaltyCommercePlatformConnection connection) {
 	  String request = "{\"memberValidation\": \""+memberValidation+"\",\"amount\":"+amount+",\"pic\":\""+pic+"\"}";
 	  try {
@@ -58,9 +70,9 @@ public class LoyaltyCommercePlatformOperations {
 	}
   }
   
-  @MediaType(value = ANY, strict = false)
-  public String getOffers(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String memberId, String offerType, @Connection LoyaltyCommercePlatformConnection connection) {
-	  String request = "{\"offerTypes\": [\""+offerType+"\"], \"user\": {\"memberId\": \""+memberId+"\", \"memberValidation\": \""+memberValidation+"\"}, \"session\": {}}";
+  @MediaType(value = MediaType.APPLICATION_JSON, strict = false)
+  public String getOffersForMember(@Config LoyaltyCommercePlatformConfiguration configuration, String memberValidation, String offerType, @Connection LoyaltyCommercePlatformConnection connection) {
+	  String request = "{\"offerTypes\": [\""+offerType+"\"], \"user\": {\"memberValidation\": \""+memberValidation+"\"}, \"session\": {}}";
 	  try {
 		return connection.callLCPOfferSets(request);
 	} catch (Exception e) {
