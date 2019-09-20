@@ -6,7 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.points</groupId>
     <artifactId>lcp</artifactId>
+<<<<<<< HEAD
     <version>1.0.31</version>
+=======
+    <version>1.0.32</version>
+>>>>>>> branch 'master' of https://github.com/mihneagaleteanu/mule-connector.git
     <packaging>mule-extension</packaging>
     <name>Loyalty Commerce Platform Extension</name>
 
